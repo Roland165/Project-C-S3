@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.24)
-project(ProjetS3 C)
+project(Projet_C_S3_MAX C)
 
-set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_STANDARD 99)
 
-add_executable(ProjetS3 main.c list.c list.h)
+add_executable(Projet_C_S3_MAX main.c list.c list.h cellandcells.c cellandcells.h)
