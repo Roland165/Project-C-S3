@@ -1,21 +1,22 @@
-#ifndef PROJETS3_LIST_H
-#define PROJETS3_LIST_H
+//
+// Created by Max on 02/11/2023.
+//
 
-typedef struct Cell{
-    int value;
-    int level;
-    struct Cell *next;
-}Cell;
+
+
+#ifndef PROJET_C_S3_MAX_LIST_H
+#define PROJET_C_S3_MAX_LIST_H
+
+#include "cellandcells.h"
 
 typedef struct List{
-    int max_level;
-    struct Cell *heads[100];
+    Cells cellsHeads;
+    int nbLevels;
 }List;
 
-List createList();
-Cell *createCell(int value, int level);
-void displayList(List list);
-void addCellToList(List *list, int value, int level);
-void addLevel(List *list);
+List* createEmptyList(int nbLevelsMaxi);
+List* addCellToHeadList(List* myList, int value, int nbLevels);
+void displayCellsInListByLevel(List* myList, int level);
 
-#endif //PROJETS3_LIST_H
+
+#endif //PROJET_C_S3_MAX_LIST_H
