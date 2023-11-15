@@ -63,31 +63,19 @@ void displayCellsInListByLevel(List* myList, int level){
 
 void displayCellsInList(List* myList){
     for(int level = 1; level <= myList->nbLevels; level++){
-        //Boulce pour le niveau 1 (le tout premier niveau)
-        if(level == 1){
-            Cell *temp = myList->cellsHeads.next[level - 1];
-            printf("[list head_%d @-]--", level-1);
-            while (temp != NULL) {
+        Cell *temp = myList->cellsHeads.next[0];
+        printf("[list head_%d @-]--", level-1);
+        while (temp != NULL) {
+            // On vérifie d'abord si le niveau du cell qu'on souhaite afficher existe, sinon, on fait un print avec une longue flèche pour l'affichage.
+            if(temp->nbLevels >= level){
                 printf(">[ %d|@-]--", temp->value);
-                temp = temp->cellsNext.next[level - 1];
             }
-            printf(">NULL\n");
-        }
-        // Pour les autres levels :
-        else{
-            Cell *temp = myList->cellsHeads.next[0];
-            printf("[list head_%d @-]--", level-1);
-            while (temp != NULL) {
-                // On vérifie d'abord si le niveau du cell qu'on souhaite afficher existe, sinon, on fait un print avec une longue flèche pour l'affichage.
-                if(temp->nbLevels >= level){
-                    printf(">[ %d|@-]--", temp->value);
-                }
-                else{
-                    printf("----------");
-                }
-                temp = temp->cellsNext.next[0];
+            else{
+                printf("----------");
             }
-            printf(">NULL\n");
+            temp = temp->cellsNext.next[0];
         }
+        printf(">NULL\n");
+        return;
     }
 }
