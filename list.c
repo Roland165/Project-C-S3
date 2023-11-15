@@ -22,12 +22,17 @@ List* createEmptyList(int nbLevelsMaxi){
     }
 }
 
-List* addCellToHeadList(List* myList, int value, int nbLevels){
+List* addCellToHeadList(List* myList, int value, int nbLevels) {
     Cell* newCell = createCell(value, nbLevels);
-    for(int i=0; i<nbLevels; i++) {
-        newCell->cellsNext.next[i] = myList->cellsHeads.next[i];
-        myList->cellsHeads.next[i] = newCell;
+    for (int i = 0; i < nbLevels; i++) {
+        Cell** current = &myList->cellsHeads.next[i];
+        while (*current != NULL && (*current)->value < value) {
+            current = &(*current)->cellsNext.next[i];
+        }
+        newCell->cellsNext.next[i] = *current;
+        *current = newCell;
     }
+
     return myList;
 }
 
