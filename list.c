@@ -24,8 +24,10 @@ List* createEmptyList(int nbLevelsMaxi){
 
 List* addCellToHeadList(List* myList, int value, int nbLevels){
     Cell* newCell = createCell(value, nbLevels);
-    newCell->cellsNext.next[0] = myList->cellsHeads.next[0];
-    myList->cellsHeads.next[0] = newCell;
+    for(int i=0; i<nbLevels; i++) {
+        newCell->cellsNext.next[i] = myList->cellsHeads.next[i];
+        myList->cellsHeads.next[i] = newCell;
+    }
     return myList;
 }
 
@@ -54,6 +56,38 @@ void displayCellsInListByLevel(List* myList, int level){
                 printf("\n");
                 return;
             }
+        }
+    }
+}
+
+
+void displayCellsInList(List* myList){
+    for(int level = 1; level <= myList->nbLevels; level++){
+        //Boulce pour le niveau 1 (le tout premier niveau)
+        if(level == 1){
+            Cell *temp = myList->cellsHeads.next[level - 1];
+            printf("[list head_%d @-]--", level-1);
+            while (temp != NULL) {
+                printf(">[ %d|@-]--", temp->value);
+                temp = temp->cellsNext.next[level - 1];
+            }
+            printf(">NULL\n");
+        }
+        // Pour les autres levels :
+        else{
+            Cell *temp = myList->cellsHeads.next[0];
+            printf("[list head_%d @-]--", level-1);
+            while (temp != NULL) {
+                // On vérifie d'abord si le niveau du cell qu'on souhaite afficher existe, sinon, on fait un print avec une longue flèche pour l'affichage.
+                if(temp->nbLevels >= level){
+                    printf(">[ %d|@-]--", temp->value);
+                }
+                else{
+                    printf("----------");
+                }
+                temp = temp->cellsNext.next[0];
+            }
+            printf(">NULL\n");
         }
     }
 }
