@@ -10,16 +10,14 @@ List* createEmptyList(int nbLevelsMaxi){
     if(nbLevelsMaxi == 0){
         return NULL;
     }
-    else{
-        List* newList = (List*)malloc(sizeof(List));
-        newList->nbLevels = nbLevelsMaxi;
-        Cell** newCells = (Cell**)malloc(sizeof(Cell*) * nbLevelsMaxi);
-        newList->cellsHeads.next = newCells;
-        for(int i = 0; i < nbLevelsMaxi; i++){
-            newList->cellsHeads.next[i] = NULL;
-        }
-        return newList;
+    List* newList = (List*)malloc(sizeof(List));
+    newList->nbLevels = nbLevelsMaxi;
+    Cell** newCells = (Cell**)malloc(sizeof(Cell*) * nbLevelsMaxi);
+    newList->cellsHeads.next = newCells;
+    for(int i = 0; i < nbLevelsMaxi; i++){
+        newList->cellsHeads.next[i] = NULL;
     }
+    return newList;
 }
 
 List* addCellToHeadList(List* myList, int value, int nbLevels) {
@@ -36,9 +34,10 @@ List* addCellToHeadList(List* myList, int value, int nbLevels) {
     return myList;
 }
 
+
 void displayCellsInListByLevel(List* myList, int level){
     if(myList->nbLevels == 0){
-        printf("Error: nblevels of list is equal to 0.\n");
+        printf("Error: nb_levels of list is equal to 0.\n");
         return;
     }
     else{
@@ -71,7 +70,6 @@ void displayCellsInList(List* myList){
         Cell *temp = myList->cellsHeads.next[0];
         printf("[list head_%d @-]--", level-1);
         while (temp != NULL) {
-            // On vérifie d'abord si le niveau du cell qu'on souhaite afficher existe, sinon, on fait un print avec une longue flèche pour l'affichage.
             if(temp->nbLevels >= level){
                 printf(">[ %d|@-]--", temp->value);
             }
@@ -81,6 +79,6 @@ void displayCellsInList(List* myList){
             temp = temp->cellsNext.next[0];
         }
         printf(">NULL\n");
-        return;
     }
+    printf("\n");
 }
