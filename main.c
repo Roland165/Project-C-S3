@@ -13,8 +13,8 @@ int main() {
 
     //partie 2
     int nbLevels = 3;
-    int targetValue = 5;
-    int targetValue2 = 4;
+    int targetValue = 1;
+    int targetValue2 = 2;
     List* myList2 = createListFromValue(nbLevels);
     displayCellsInList(myList2);
     Cell* resultLevel0 = searchInTheLowestLevel(myList2, targetValue);
@@ -29,16 +29,17 @@ int main() {
     } else {
         printf("%d not found at level 0.\n", targetValue2);
     }
-
-    Cell* resultHighestLevel = searchFromHighestLevel(myList2, targetValue);
-    Cell* resultHighestLevel1 = searchFromHighestLevel(myList2, targetValue2);
-    if (resultHighestLevel != NULL) {
-        printf("Found %d starting from the highest level.\n", targetValue);
+    //Cell* cell = findPrevious(myList->cellsHeads.next[myList2->nbLevels - 1], myList2,2);
+    //printf("%d\n",cell->value);
+    int resultHighestLevel = searchFromHighestLevel(myList2, targetValue);
+    int resultHighestLevel1 = searchFromHighestLevel(myList2, targetValue2);
+    if (resultHighestLevel != -1) {
+        printf("Found %d starting from the level %d.\n", targetValue, resultHighestLevel);
     } else {
         printf("%d not found starting from the highest level.\n", targetValue);
     }
-    if (resultHighestLevel1 != NULL) {
-        printf("Found %d starting from the highest level.\n", targetValue2);
+    if (resultHighestLevel1 != -1) {
+        printf("Found %d starting from the level %d.\n", targetValue2,resultHighestLevel1);
     } else {
         printf("%d not found starting from the highest level.\n", targetValue2);
     }
