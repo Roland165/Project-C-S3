@@ -45,17 +45,43 @@ Cell* searchInTheLowestLevel(List* myList, int target) {
 }
 
 Cell* searchFromHighestLevel(List* myList, int target) {
-        int highestLevel = myList->nbLevels - 1;
-        Cell *current = myList->cellsHeads.next[highestLevel];
-
-        while (current != NULL) {
-            if (current->value == target) {
-                return current;
-            }
-
-            if (current->nbLevels > 0) {
-                current = current->cellsNext.next[current->nbLevels - 1];
-            }
+    int highestLevel = myList->nbLevels -1;
+    Cell *current = myList->cellsHeads.next[highestLevel];
+    while(current->value>target){
+        highestLevel=highestLevel-1;
+        current = myList->cellsHeads.next[highestLevel];
+    }
+    if (current->value == target){
+        return current;
+    }
+    while (highestLevel>=0){
+        if(current->cellsNext.next[highestLevel]!= NULL && current->cellsNext.next[highestLevel]->value == target){
+            return current->cellsNext.next[highestLevel];
         }
+        if (current->cellsNext.next[highestLevel]== NULL || current->cellsNext.next[highestLevel]->value>target){
+            highestLevel --;
+        }
+        else{
+            current = current->cellsNext.next[highestLevel];
+        }
+    }
     return NULL;
+}
+
+void displaySearchFromHighestLevel(List* myList, int target){
+    Cell *resultHighestLevel = searchFromHighestLevel(myList, target);
+    if (resultHighestLevel != NULL) {
+        printf("Found %d at level %d.\n", target, resultHighestLevel->nbLevels);
+    } else {
+        printf("%d not found starting from the highest level.\n", target);
+    }
+}
+void displaySearchInTheLowestLevel(List *mylist, int target) {
+    Cell *resultLevel0 = searchInTheLowestLevel(mylist, target);
+
+    if (resultLevel0 != NULL) {
+        printf("Found %d at level 0.\n", target);
+    } else {
+        printf("%d not found at level 0.\n", target);
+    }
 }
