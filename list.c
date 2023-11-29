@@ -66,6 +66,10 @@ void displayCellsInListByLevel(List* myList, int level){
 
 
 void displayCellsInList(List* myList){
+    if(myList==NULL){
+        printf("DisplayCellsInList error: List is empty (NULL).");
+        return;
+    }
     for(int level = 1; level <= myList->nbLevels; level++){
         Cell *temp = myList->cellsHeads.next[0];
         printf("[list head_%d @-]--", level-1);
