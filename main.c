@@ -12,15 +12,14 @@ int main() {
     displayCellsInList(myList);*/
 
     //partie 2
-    int nbLevels = 10;
+    int nbLevels = 3;
     List* myList2 = createListFromValue(nbLevels);
     displayCellsInList(myList2);
+    //displaySearchFromHighestLevel(myList2, 8);
 
-    //Cell* cell = findPrevious(myList->cellsHeads.next[myList2->nbLevels - 1], myList2,2);
-    //printf("%d\n",cell->value);
-    displaySearchFromHighestLevel(myList2, 8);
-    displaySearchFromHighestLevel(myList2, 16);
-    displaySearchFromHighestLevel(myList2, 62);
-    displaySearchFromHighestLevel(myList2, 100);
+    printf("debug search low bool = %d\n",searchForNbrValuesFromLowestLevel(myList2, 4, 30));
+    printf("debug search high bool = %d\n",searchForNbrValuesFromHighestLevel(myList2, 4, 30));
+
+
     return 0;
 }
