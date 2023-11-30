@@ -20,7 +20,7 @@ int main() {
     //printf("debug search low bool = %d\n",searchForNbrValuesFromLowestLevel(myList2, 4, 30));
     //printf("debug search high bool = %d\n",searchForNbrValuesFromHighestLevel(myList2, 4, 30));
 
-    displayTimeBothSearchesForOneLevelAndNbrValues(9,100000);
+    displayTimeBothSearchesForNbrLevelsMaxAndNbrValues(14,100000);
 
 
     return 0;

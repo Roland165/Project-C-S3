@@ -155,3 +155,12 @@ void displayTimeBothSearchesForOneLevelAndNbrValues(int level, int nbrValues){
     }
     printf("Both Searches for nbrValues=%d; level=%d DONE.\n",nbrValues,level);
 }
+
+
+
+void displayTimeBothSearchesForNbrLevelsMaxAndNbrValues(int maxLevels, int nbrValues){
+    // MIN LEVEL IS 7
+    for(int nbrLevels = 7; nbrLevels <= maxLevels; nbrLevels++){
+        displayTimeBothSearchesForOneLevelAndNbrValues(nbrLevels, nbrValues);
+    }
+}
