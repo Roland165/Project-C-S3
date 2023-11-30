@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include "timer.h"
 
 List *createListFromValue(int n) {
     if (n == 0) {
@@ -133,4 +134,24 @@ int searchForNbrValuesFromHighestLevel(List *myList, int nbLevels, int nbrValues
         return 1;
     }
     return 0;
+}
+
+
+void displayTimeBothSearchesForOneLevelAndNbrValues(int level, int nbrValues){
+    List* myList = createListFromValue(level);
+    startTimer();
+    if((searchForNbrValuesFromLowestLevel(myList, level, nbrValues))==1){
+        stopTimer();
+        printf("Lowest Level Seach: nbrValues=%d; level=%d; ",nbrValues,level);
+        printf("%s",getTimeAsString());
+        printf("\n");
+    }
+    startTimer();
+    if((searchForNbrValuesFromHighestLevel(myList, level, nbrValues))==1){
+        stopTimer();
+        printf("Highest Level Seach: nbrValues=%d; level=%d; ",nbrValues,level);
+        printf("%s",getTimeAsString());
+        printf("\n");
+    }
+    printf("Both Searches for nbrValues=%d; level=%d DONE.\n",nbrValues,level);
 }
