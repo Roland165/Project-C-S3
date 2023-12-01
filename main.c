@@ -22,6 +22,19 @@ int main() {
 
     displayTimeBothSearchesForNbrLevelsMaxAndNbrValues(14,100000);
 
+    //partie 3
+    /*List agenda;
 
+    int option;
+    do {
+        displayMenu(&agenda);
+        printf("Enter your choice (1-8, 0 to exit): ");
+        scanf("%d", &option);
+
+        if (option >= 1 && option <= 8) {
+            executeMenuOption(&agenda, option);
+        } else if (option != 0) {
+            printf("Invalid choice. Please enter a number between 0 and 8.\n");
+        }*/
     return 0;
 }
