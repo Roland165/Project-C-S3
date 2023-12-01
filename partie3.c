@@ -27,39 +27,39 @@ void displayAppointments(Contact *contact) {
     printf("Appointments for %s %s:\n", contact->nom, contact->prenom);
 }
 
-void createContact(List *agenda, char *nom, char *prenom) {
-    Contact *newContact = createContact(nom, prenom);
-    CellLevel0 *newCellLevel0 = createCellLevel0(newContact, NULL);
-
-    int level = 3;
-    Cell *currentCell = &agenda->cellsHeads[level];
-    while (level >= 0) {
-        if (currentCell->next == NULL || nom[0] < currentCell->next->letter) {
-            Cell *newCell = createCell(nom[0]);
-            newCell->next = currentCell->next;
-            currentCell->next = newCell;
-            newCell->down = newCellLevel0;
-            break;
-        } else if (nom[0] == currentCell->next->letter) {
-            currentCell = currentCell->next;
-            level--;
-        } else {
-            currentCell = currentCell->next;
-        }
-    }
-
-    printf("Contact created: %s %s\n", nom, prenom);
+Contact *createContact(char *nom, char *prenom) {
+    Contact *newContact = malloc(sizeof(Contact));
+    newContact->nom = strdup(nom);
+    newContact->prenom = strdup(prenom);
+    return newContact;
 }
 
-void createAppointment(List *agenda, char *nom, char *date, char *heure, char *duree, char *objet) {
-    CellLevel0 *contactCell = searchContact(agenda, nom);
-    if (contactCell != NULL) {
-        Appointment *newAppointment = createAppointment(date, heure, duree, objet);
-        contactCell->appointment = newAppointment;
-        printf("Appointment created for %s %s\n", contactCell->contact->nom, contactCell->contact->prenom);
-    } else {
-        printf("Contact not found. Unable to create appointment.\n");
-    }
+
+Appointment *createAppointment(char *date, char *heure, char *duree, char *objet) {
+    Appointment *newAppointment = malloc(sizeof(Appointment));
+    newAppointment->date = strdup(date);
+    newAppointment->heure = strdup(heure);
+    newAppointment->duree = strdup(duree);
+    newAppointment->objet = strdup(objet);
+    return newAppointment;
+}
+
+
+CellLevel0 *createCellLevel0(Contact *contact, Appointment *appointment) {
+    CellLevel0 *newCell = malloc(sizeof(CellLevel0));
+    newCell->contact = contact;
+    newCell->appointment = appointment;
+    newCell->next = NULL;
+    return newCell;
+}
+
+
+Cell *createCell(char letter) {
+    Cell *newCell = malloc(sizeof(Cell));
+    newCell->letter = letter;
+    newCell->next = NULL;
+    newCell->down = NULL;
+    return newCell;
 }
 
 void deleteAppointment(List *agenda, char *nom, char *date, char *heure) {
