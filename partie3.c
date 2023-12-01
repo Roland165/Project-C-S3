@@ -172,7 +172,6 @@ void executeMenuOption(List *agenda, int option) {
             printf("Enter partial name to search: ");
             scanf("%s", nom);
             contactCell = searchContact(agenda, nom);
-            // Add additional logic based on the returned contactCell if needed
             break;
         case 2:
             printf("Enter contact name: ");
