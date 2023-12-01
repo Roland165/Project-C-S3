@@ -150,3 +150,76 @@ void calculateInsertionTime(List *agenda, char *nom, char *prenom) {
     printf("Insertion time for %s %s: %d levels\n", nom, prenom, insertionTime);
 }
 
+void displayMenu(List *agenda) {
+    printf("\n--- Agenda Management Menu ---\n");
+    printf("1. Search for a contact (auto-completion from the 3rd letter)\n");
+    printf("2. Display appointments of a contact\n");
+    printf("3. Create a new contact\n");
+    printf("4. Create a new appointment for a contact\n");
+    printf("5. Delete an appointment\n");
+    printf("6. Save all appointments to a file\n");
+    printf("7. Load appointments from a file\n");
+    printf("8. Calculate insertion time for a new contact\n");
+    printf("0. Exit\n");
+}
+
+void executeMenuOption(List *agenda, int option) {
+    char nom[100], prenom[100], date[11], heure[6], duree[6], objet[100], filename[100];
+    CellLevel0 *contactCell;
+
+    switch (option) {
+        case 1:
+            printf("Enter partial name to search: ");
+            scanf("%s", nom);
+            contactCell = searchContact(agenda, nom);
+            // Add additional logic based on the returned contactCell if needed
+            break;
+        case 2:
+            printf("Enter contact name: ");
+            scanf("%s", nom);
+            contactCell = searchContact(agenda, nom);
+            if (contactCell != NULL) {
+                displayAppointments(contactCell->contact);
+            }
+            break;
+        case 3:
+            printf("Enter new contact name (nom prenom): ");
+            scanf("%s %s", nom, prenom);
+            createContact(agenda, nom, prenom);
+            break;
+        case 4:
+            printf("Enter contact name: ");
+            scanf("%s", nom);
+            contactCell = searchContact(agenda, nom);
+            if (contactCell != NULL) {
+                printf("Enter appointment details (date heure duree objet): ");
+                scanf("%s %s %s %s", date, heure, duree, objet);
+                createAppointment(agenda, nom, date, heure, duree, objet);
+            }
+            break;
+        case 5:
+            printf("Enter contact name: ");
+            scanf("%s", nom);
+            printf("Enter appointment details (date heure): ");
+            scanf("%s %s", date, heure);
+            deleteAppointment(agenda, nom, date, heure);
+            break;
+        case 6:
+            printf("Enter filename to save appointments: ");
+            scanf("%s", filename);
+            saveAppointments(agenda, filename);
+            break;
+        case 7:
+            printf("Enter filename to load appointments: ");
+            scanf("%s", filename);
+            loadAppointments(agenda, filename);
+            break;
+        case 8:
+            printf("Enter new contact name (nom prenom): ");
+            scanf("%s %s", nom, prenom);
+            calculateInsertionTime(agenda, nom, prenom);
+            break;
+        default:
+            printf("Invalid option.\n");
+    }
+}
