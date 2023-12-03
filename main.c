@@ -1,6 +1,9 @@
 #include "partie2.h"
 #include "string.h"
 #include "stdio.h"
+#include "agenda.h"
+
+
 int main() {
     //partie 1
     /*List* myList = createEmptyList(5);
@@ -20,21 +23,12 @@ int main() {
     //printf("debug search low bool = %d\n",searchForNbrValuesFromLowestLevel(myList2, 4, 30));
     //printf("debug search high bool = %d\n",searchForNbrValuesFromHighestLevel(myList2, 4, 30));
 
-    displayTimeBothSearchesForNbrLevelsMaxAndNbrValues(14,100000);
+    //displayTimeBothSearchesForNbrLevelsMaxAndNbrValues(8,10000000);
 
     //partie 3
-    /*List agenda;
+    char* myStr = scanString();
+    printf("result: %s",myStr);
 
-    int option;
-    do {
-        displayMenu(&agenda);
-        printf("Enter your choice (1-8, 0 to exit): ");
-        scanf("%d", &option);
 
-        if (option >= 1 && option <= 8) {
-            executeMenuOption(&agenda, option);
-        } else if (option != 0) {
-            printf("Invalid choice. Please enter a number between 0 and 8.\n");
-        }*/
     return 0;
 }
