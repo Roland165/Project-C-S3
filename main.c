@@ -27,8 +27,15 @@ int main() {
 
     //partie 3
     char* myStr = scanString();
-    printf("result: %s",myStr);
+    printf("result: %s\n",myStr);
+    char* myStr2 = scanString();
+    printf("result: %s \n",myStr2);
 
+    //Contact* myContact = createContact(myStr,myStr2);
+    //displayContact(myContact);
+
+    RDV* myRDV = createRDV(01,10,2000,23,59,"Coucou les musulmans moi je mange de la glace");
+    displayRDV(*myRDV);
 
     return 0;
 }
