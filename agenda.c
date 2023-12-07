@@ -47,3 +47,116 @@ void displayRDV(RDV myRDV){
     printf("   Heure h Minutes: %d h %d\n",myRDV.heure, myRDV.minute);
     printf("   Objet : %s\n",myRDV.objet);
 }
+
+void displayMenu() {
+    printf("\nMenu:\n");
+    printf("1. Rechercher un contact\n");
+    printf("2. Afficher les rendez-vous d'un contact\n");
+    printf("3. Créer un contact\n");
+    printf("4. Créer un rendez-vous pour un contact\n");
+    printf("5. Supprimer un rendez-vous\n");
+    printf("6. Sauvegarder le fichier de tous les rendez-vous\n");
+    printf("7. Charger un fichier de rendez-vous\n");
+    printf("8. Fournir les temps de calcul pour une insertion de nouveau contact\n");
+    printf("0. Quitter\n");
+}
+
+void menu(){
+    int choice;
+
+    do {
+        displayMenu();
+        printf("Choix : ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1: {
+                char partialName[100];
+                printf("Entrez les premières lettres du nom : ");
+                scanf("%s", partialName);
+                //char* fullName = autoCompleteSearch(contacts, partialName);
+                //if (fullName != NULL) {
+                    //printf("Nom complet trouvé : %s\n", fullName);
+                    //free(fullName);
+                //} else {
+                    printf("Aucun nom trouvé.\n");
+                //}
+                break;
+            }
+            case 2: {
+                char nom[100];
+                printf("Entrez le nom du contact : ");
+                scanf("%s", nom);
+                //Contact* foundContact = searchContact(contacts, nom);
+                //if (foundContact != NULL) {
+                //    displayAppointments(foundContact);
+                //} else {
+                    printf("Contact non trouvé.\n");
+                //}
+                break;
+            }
+            case 3: {
+                char nom[100];
+                printf("Entrez le nom du nouveau contact : ");
+                scanf("%s", nom);
+                char prenom[100];
+                printf("Entrez le prenom du nouveau contact : ");
+                scanf("%s", prenom);
+                Contact* newContact = createContact(nom, prenom);
+                //insertContact(&contacts, newContact);
+                printf("Contact créé et ajouté à la liste.\n");
+                break;
+            }
+            case 4: {
+                char nom[100];
+                printf("Entrez le nom du contact : ");
+                scanf("%s", nom);
+                //Contact* foundContact = searchContact(contacts, nom);
+                //if (foundContact != NULL) {
+                    //RDV* newRDV = createRDV(int jour, int mois, int annee, int heure, int minute, char* objet);
+                    //insertRDV(foundContact, newRDV);
+                    printf("Rendez-vous créé et ajouté au contact.\n");
+                //} else {
+                    printf("Contact non trouvé. Créez d'abord le contact.\n");
+                //}
+                break;
+            }
+            case 5: {
+                char nom[100];
+                printf("Entrez le nom du contact : ");
+                scanf("%s", nom);
+                //Contact* foundContact = searchContact(contacts, nom);
+                //if (foundContact != NULL) {
+                //displayAppointments(foundContact);
+                    int rdvIndex;
+                    printf("Entrez l'indice du rendez-vous à supprimer : ");
+                    scanf("%d", &rdvIndex);
+                    //deleteRDV(foundContact, rdvIndex);
+                    printf("Rendez-vous supprimé.\n");
+                //} else {
+                    printf("Contact non trouvé.\n");
+                //}
+                break;
+            }
+            case 6:
+                //saveAppointmentsToFile(contacts);
+                printf("Rendez-vous sauvegardés dans le fichier.\n");
+                break;
+            case 7:
+                //loadAppointmentsFromFile(&contacts);
+                printf("Rendez-vous chargés depuis le fichier.\n");
+                break;
+            case 8:
+                //calculateInsertionTime(&contacts);
+                printf("Temps de calcul pour une insertion de nouveau contact fourni.\n");
+                break;
+            case 0:
+                printf("Au revoir!\n");
+                break;
+            default:
+                printf("Choix invalide. Veuillez entrer un nombre entre 0 et 8.\n");
+        }
+    } while (choice != 0);
+
+    return;
+}
