@@ -127,8 +127,9 @@ int searchForNbrValuesFromHighestLevel(List *myList, int nbLevels, int nbrValues
         int iterNbrValues = 1;
         while (iterNbrValues <= nbrValues) {
             int valueToSearch = rand() % (maxiValueInList+1);
-            //printf("DEBUG: random valueToSearch = %d\n", valueToSearch);
+            //printf("DEBUG: random valueToSearch = %d ", valueToSearch);
             searchFromHighestLevel(myList, valueToSearch);
+            //printf("FOUND.\n");
             iterNbrValues++;
         }
         return 1;
@@ -153,14 +154,14 @@ void displayTimeBothSearchesForOneLevelAndNbrValues(int level, int nbrValues){
         printf("%s",getTimeAsString());
         printf("\n");
     }
-    printf("Both Searches for nbrValues=%d; level=%d DONE.\n",nbrValues,level);
+    //printf("Both Searches for nbrValues=%d; level=%d DONE.\n",nbrValues,level);
 }
 
 
 
 void displayTimeBothSearchesForNbrLevelsMaxAndNbrValues(int maxLevels, int nbrValues){
-    // MIN LEVEL IS 7
-    for(int nbrLevels = 7; nbrLevels <= maxLevels; nbrLevels++){
+    // MIN LEVEL IS 8
+    for(int nbrLevels = 8; nbrLevels <= maxLevels; nbrLevels++){
         displayTimeBothSearchesForOneLevelAndNbrValues(nbrLevels, nbrValues);
     }
 }

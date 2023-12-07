@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "partie3.h"
 
 
 CellLevel0 *searchContact(List *agenda, char *partialName) {
