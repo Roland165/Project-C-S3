@@ -23,9 +23,12 @@ int main() {
     //printf("debug search low bool = %d\n",searchForNbrValuesFromLowestLevel(myList2, 4, 30));
     //printf("debug search high bool = %d\n",searchForNbrValuesFromHighestLevel(myList2, 4, 30));
 
-    //displayTimeBothSearchesForNbrLevelsMaxAndNbrValues(8,10000000);
+    displayTimeBothSearchesForNbrLevelsMaxAndNbrValues(15,1000);
+    displayTimeBothSearchesForNbrLevelsMaxAndNbrValues(15,10000);
+    displayTimeBothSearchesForNbrLevelsMaxAndNbrValues(15,100000);
 
     //partie 3
+    /*
     char* myStr = scanString();
     printf("result: %s\n",myStr);
     char* myStr2 = scanString();
@@ -36,6 +39,7 @@ int main() {
 
     RDV* myRDV = createRDV(01,10,2000,23,59,"Coucou les musulmans moi je mange de la glace");
     displayRDV(*myRDV);
+     */
 
     return 0;
 }
