@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
-
+#include "string.h"
 
 char* scanString(){
     char* tempStr = (char*)malloc(200*sizeof(char));
@@ -25,7 +25,6 @@ Contact* createContact(char* nom, char* prenom){
 
 void displayContact(Contact* myContact){
     if(myContact != NULL){
-        printf("Displaying contact :\n");
         printf("   nom : %s\n",myContact->nom);
         printf("   prenom : %s",myContact->prenom);
     }
@@ -40,37 +39,131 @@ RDV* createRDV(int jour, int mois, int annee, int heure, int minute, char* objet
     newRDV->heure = heure;
     newRDV->minute = minute;
     newRDV->objet = objet;
+    newRDV->next=NULL;
     return newRDV;
 }
 
 void displayRDV(RDV myRDV){
-    printf("Displaying RDV:\n");
     printf("   Jour/Mois/Annee: %d / %d / %d\n",myRDV.jour, myRDV.mois, myRDV.annee);
     printf("   Heure h Minutes: %d h %d\n",myRDV.heure, myRDV.minute);
     printf("   Objet : %s\n",myRDV.objet);
 }
 
-//ROLAND
 Entree* createEntree(Contact contact){
     Entree* newEntree = (Entree *) malloc(sizeof (Entree));
     newEntree->myContact=contact;
     newEntree->myLLCRDV.head=NULL;
-    newEntree->nbLevels= getLevel(contact);
-    for(int i = 0; i < newEntree->nbLevels; i++){
-        newEntree->tabPtrEntree[i] = NULL;
+    newEntree->nbLevels= 1;
+    Entree ** newEntrees = (Entree**)malloc(sizeof(Entree*)*1);
+    newEntree->EntreeNext.next = newEntrees;
+    for(int i = 0; i < 1; i++){
+        newEntree->EntreeNext.next[i] = NULL;
     }
     return newEntree;
 }
 
-//ROLAND
-List* createEmptyList(){
-    List* newList =(List*) malloc(sizeof(List));
+ListAgenda* createEmptyListAgenda(){
+    ListAgenda* newList =(ListAgenda*) malloc(sizeof(ListAgenda));
     newList->nbLevels=4;
+    Entree** newEntrees = (Entree**)malloc(sizeof(Entree*) * 4);
+    newList->entreesHeads.next = newEntrees;
     for(int i = 0; i < 4; i++){
-        newList->tabPtrEntree[i] = NULL;
+        newList->entreesHeads.next[i] = NULL;
     }
     return newList;
 }
+
+Entree* findEntreeInList(ListAgenda list, Entree entree){
+    Entree *temp=list.entreesHeads.next[1];
+    while (temp->EntreeNext.next[1] !=NULL){
+        temp = temp->EntreeNext.next[1];
+        if (temp->myContact.nom == entree.myContact.nom)
+            return temp;
+    }
+    return NULL;
+}
+
+void addEntreetoList(ListAgenda* list, Entree* entree) {
+
+    if (list->entreesHeads.next[0] == NULL){
+        list->entreesHeads.next[0]=entree;
+        return;
+    }
+
+    Entree* current = list->entreesHeads.next[0];
+    if (strcmp(current->myContact.nom, entree->myContact.nom) > 0){
+        entree->EntreeNext.next[0] = current;
+        list->entreesHeads.next[0]=entree;
+        return;
+    }
+    while (current->EntreeNext.next[0] != NULL && strcmp(current->EntreeNext.next[0]->myContact.nom, entree->myContact.nom) < 0) {
+        current = current->EntreeNext.next[0];
+    }
+
+    entree->EntreeNext.next[0] = current->EntreeNext.next[0];
+    current->EntreeNext.next[0] = entree;
+}
+
+
+LLCRDV *createLLCRDV(){
+    LLCRDV *llcrdv=(LLCRDV*) malloc(sizeof (LLCRDV));
+    llcrdv->head=NULL;
+    return llcrdv;
+}
+
+void addRDVtoLLCRDV(RDV *rdv, LLCRDV *llcrdv){
+    if (llcrdv->head == NULL){
+        llcrdv->head=rdv;
+    }
+    else{
+        RDV *temp=llcrdv->head;
+        while (temp->next!=NULL){
+            temp=temp->next;
+        }
+        temp->next=rdv;
+    }
+}
+
+void displayLLCRDV(LLCRDV llcrdv){
+    RDV *temp=llcrdv.head;
+    if (temp==NULL){
+        printf("Empty list\n");
+        return;
+    }
+    int i=1;
+    while (temp->next!=NULL){
+        printf("RDV number %d :",i);
+        displayRDV(*temp);
+        temp=temp->next;
+        i++;
+    }
+    printf("RDV number %d :",i);
+    displayRDV(*temp);
+    printf("\n");
+}
+
+
+void displayList(ListAgenda list){
+    if (list.entreesHeads.next[0]==NULL){
+        printf("Empty list\n");
+        return;
+    }
+    Entree *temp=list.entreesHeads.next[0];
+    int i=1;
+    while (temp->EntreeNext.next[0] !=NULL){
+        printf("Contact : \n");
+        displayContact(&temp->myContact);
+        printf("\n and RDV(s) : \n");
+        displayLLCRDV(temp->myLLCRDV);
+        temp=temp->EntreeNext.next[0];
+        i++;
+    }
+    printf("Contact : \n");
+    displayContact(&temp->myContact);
+    printf("\n and RDV(s) : \n");
+    displayLLCRDV(temp->myLLCRDV);
+}
+
 
 //Mathieu
 void displayMenu() {
@@ -187,15 +280,15 @@ void menu(){
     return;
 }
 
-int getLevel(Contact contact, List myList){
+int getLevel(Contact contact, ListAgenda myList){
     //marche que pour le nom pour l'instant
-    if(myList.nbLevels == 0 || myList.tabPtrEntree == NULL){
+    if(myList.nbLevels == 0 || myList.entreesHeads.next[0] == NULL){
         return 4;
     }
     else{
         int levelOfContact = 4;
         for(int idxLetter = 0; idxLetter<=4; idxLetter++){
-            Entree* tempEntree = myList.tabPtrEntree[0];
+            Entree* tempEntree = myList.entreesHeads.next[0];
             //On copie le nom pour pas ecraser celui dans le contact
             char* nomTemp = strdup(tempEntree->myContact.nom);
             //On met le nomTemp en minuscule
