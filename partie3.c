@@ -1,225 +1,350 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include "partie3.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 
 
-CellLevel0 *searchContact(List *agenda, char *partialName) {
-    int level = 3;
-    Cell *currentCell = &agenda->cellsHeads[level];
-    while (level >= 0 && currentCell != NULL) {
-        CellLevel0 *currentLevel0 = currentCell->down;
-        while (currentLevel0 != NULL) {
-            if (strncmp(partialName, currentLevel0->contact->nom, strlen(partialName)) == 0) {
-                printf("Auto-completion suggestion: %s %s\n", currentLevel0->contact->nom, currentLevel0->contact->prenom);
-                return currentLevel0;
-            }
-            currentLevel0 = currentLevel0->next;
-        }
-        currentCell = currentCell->next;
-        level--;
-    }
-    printf("Contact not found.\n");
-    return NULL;
-}
-
-
-void displayAppointments(Contact *contact) {
-    printf("Appointments for %s %s:\n", contact->nom, contact->prenom);
-}
-
-Contact *createContact(char *nom, char *prenom) {
-    Contact *newContact = malloc(sizeof(Contact));
-    newContact->nom = strdup(nom);
-    newContact->prenom = strdup(prenom);
+Contact* createContact(char* nom, char* prenom){
+    Contact* newContact = (Contact*) malloc(sizeof(Contact));
+    newContact->nom = nom;
+    newContact->prenom = prenom;
     return newContact;
 }
 
-
-Appointment *createAppointment(char *date, char *heure, char *duree, char *objet) {
-    Appointment *newAppointment = malloc(sizeof(Appointment));
-    newAppointment->date = strdup(date);
-    newAppointment->heure = strdup(heure);
-    newAppointment->duree = strdup(duree);
-    newAppointment->objet = strdup(objet);
-    return newAppointment;
-}
-
-
-CellLevel0 *createCellLevel0(Contact *contact, Appointment *appointment) {
-    CellLevel0 *newCell = malloc(sizeof(CellLevel0));
-    newCell->contact = contact;
-    newCell->appointment = appointment;
-    newCell->next = NULL;
-    return newCell;
-}
-
-
-Cell *createCell(char letter) {
-    Cell *newCell = malloc(sizeof(Cell));
-    newCell->letter = letter;
-    newCell->next = NULL;
-    newCell->down = NULL;
-    return newCell;
-}
-
-void deleteAppointment(List *agenda, char *nom, char *date, char *heure) {
-    CellLevel0 *contactCell = searchContact(agenda, nom);
-    if (contactCell != NULL && contactCell->appointment != NULL) {
-        free(contactCell->appointment);
-        contactCell->appointment = NULL;
-        printf("Appointment deleted for %s %s\n", contactCell->contact->nom, contactCell->contact->prenom);
-    } else {
-        printf("No appointment found for the specified contact.\n");
+void displayContact(Contact* myContact){
+    if(myContact != NULL){
+        printf("nom : %s\n",myContact->nom);
+        printf("prenom : %s\n",myContact->prenom);
     }
 }
 
-void saveAppointments(List *agenda, char *filename) {
-    FILE *file = fopen(filename, "w");
-    if (file != NULL) {
-        int level = 3;
-        Cell *currentCell = &agenda->cellsHeads[level];
-        while (level >= 0 && currentCell != NULL) {
-            CellLevel0 *currentLevel0 = currentCell->down;
-            while (currentLevel0 != NULL) {
-                fprintf(file, "%s %s\n", currentLevel0->contact->nom, currentLevel0->contact->prenom);
-                if (currentLevel0->appointment != NULL) {
-                    fprintf(file, "  Appointment: %s %s %s %s\n", currentLevel0->appointment->date,
-                            currentLevel0->appointment->heure, currentLevel0->appointment->duree,
-                            currentLevel0->appointment->objet);
-                }
-                currentLevel0 = currentLevel0->next;
-            }
-            currentCell = currentCell->next;
-            level--;
+
+RDV* createRDV(int jour, int mois, int annee, int heure, int minute, char* objet){
+    RDV* newRDV = (RDV*) malloc(sizeof(RDV));
+    newRDV->jour = jour;
+    newRDV->mois = mois;
+    newRDV->annee = annee;
+    newRDV->heure = heure;
+    newRDV->minute = minute;
+    newRDV->objet = objet;
+    newRDV->next=NULL;
+    return newRDV;
+}
+
+void displayRDV(RDV myRDV){
+    printf("\nLa date du rendez-vous est : %d / %d / %d.\n",myRDV.jour, myRDV.mois, myRDV.annee);
+    printf("Le rendez-vous est a %dh %d.\n",myRDV.heure, myRDV.minute);
+    printf("l'objet du rendez-vous est : %s.\n",myRDV.objet);
+}
+
+Entree* createEntree(Contact contact){
+    Entree* newEntree = (Entree *) malloc(sizeof (Entree));
+    newEntree->myContact=contact;
+    newEntree->myLLCRDV.head=NULL;
+    newEntree->nbLevels= 1;
+    Entree ** newEntrees = (Entree**)malloc(sizeof(Entree*)*1);
+    newEntree->EntreeNext.next = newEntrees;
+    for(int i = 0; i < 1; i++){
+        newEntree->EntreeNext.next[i] = NULL;
+    }
+    return newEntree;
+}
+
+ListAgenda* createEmptyListAgenda(){
+    ListAgenda* newList =(ListAgenda*) malloc(sizeof(ListAgenda));
+    newList->nbLevels=4;
+    Entree** newEntrees = (Entree**)malloc(sizeof(Entree*) * 4);
+    newList->entreesHeads.next = newEntrees;
+    for(int i = 0; i < 4; i++){
+        newList->entreesHeads.next[i] = NULL;
+    }
+    return newList;
+}
+
+LLCRDV *createLLCRDV(){
+    LLCRDV *llcrdv=(LLCRDV*) malloc(sizeof (LLCRDV));
+    llcrdv->head=NULL;
+    return llcrdv;
+}
+
+void addRDVtoLLCRDV(RDV *rdv, LLCRDV *llcrdv){
+    if (llcrdv->head == NULL){
+        llcrdv->head=rdv;
+    }
+    else{
+        RDV *temp=llcrdv->head;
+        while (temp->next!=NULL){
+            temp=temp->next;
         }
-        fclose(file);
-        printf("Appointments saved to %s\n", filename);
-    } else {
-        printf("Error opening file for saving appointments.\n");
+        temp->next=rdv;
     }
 }
 
-void loadAppointments(List *agenda, char *filename) {
-    FILE *file = fopen(filename, "r");
-    if (file != NULL) {
-        char line[256]; 
-        while (fgets(line, sizeof(line), file) != NULL) {
-            char *token = strtok(line, " ");
-            char *nom = token;
-            token = strtok(NULL, " ");
-            char *prenom = token;
-            CellLevel0 *contactCell = searchContact(agenda, nom);
-            if (contactCell != NULL) {
-                token = strtok(NULL, " ");
-                if (token != NULL && strcmp(token, "Appointment:") == 0) {
-                    char *date = strtok(NULL, " ");
-                    char *heure = strtok(NULL, " ");
-                    char *duree = strtok(NULL, " ");
-                    char *objet = strtok(NULL, "\n");
-                    Appointment *newAppointment = createAppointment(date, heure, duree, objet);
-                    contactCell->appointment = newAppointment;
-                }
-            } else {
-                printf("Contact not found: %s %s\n", nom, prenom);
+void displayLLCRDV(LLCRDV llcrdv){
+    RDV *temp=llcrdv.head;
+    if (temp==NULL){
+        printf("Ce contact n'a pas de rendez-vous.\n\n");
+        return;
+    }
+    int i=1;
+    while (temp->next!=NULL){
+        printf("RDV number %d :",i);
+        displayRDV(*temp);
+        temp=temp->next;
+        i++;
+    }
+    printf("RDV number %d :",i);
+    displayRDV(*temp);
+    printf("\n");
+}
+
+void displayInformationFromSomeone(char* name, ListAgenda list){
+    int i = 1;
+    printf("%s",name);
+    Entree *temp=list.entreesHeads.next[0];
+    while (temp->EntreeNext.next[0] != NULL){
+        if (temp->myContact.nom == name){
+            printf("\nLes RDV(s) de la personne : \n");
+            displayLLCRDV(temp->myLLCRDV);
+            i = 0;
+        }
+            temp=temp->EntreeNext.next[0];
+    }
+    if (i){
+        printf("\nCette personne n'existe pas");
+    }
+}
+
+void displayList(ListAgenda list){
+    if (list.entreesHeads.next[0]==NULL){
+        printf("Ce contact n'a pas de rendez-vous\n");
+        return;
+    }
+    Entree *temp=list.entreesHeads.next[0];
+    while (temp->EntreeNext.next[0] !=NULL){
+        printf("Informations du contact : \n");
+        displayContact(&temp->myContact);
+        printf("\nLes RDV(s) de la personne : \n");
+        displayLLCRDV(temp->myLLCRDV);
+        temp=temp->EntreeNext.next[0];
+    }
+    printf("Informations du contact : \n");
+    displayContact(&temp->myContact);
+    printf("\nLes RDV(s) de la personne : \n");
+    displayLLCRDV(temp->myLLCRDV);
+}
+
+
+//Mathieu
+void displayMenu() {
+    printf("\nMenu:\n");
+    printf("1. Rechercher un contact\n");
+    printf("2. Afficher les rendez-vous d'un contact\n");
+    printf("3. Créer un contact\n");
+    printf("4. Créer un rendez-vous pour un contact\n");
+    printf("5. Supprimer un rendez-vous\n");
+    printf("6. Sauvegarder le fichier de tous les rendez-vous\n");
+    printf("7. Charger un fichier de rendez-vous\n");
+    printf("8. Fournir les temps de calcul pour une insertion de nouveau contact\n");
+    printf("0. Quitter\n");
+}
+
+//Mathieu
+void menu(){
+    int choice;
+
+    do {
+        displayMenu();
+        printf("Choix : ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1: {
+                char partialName[100];
+                printf("Entrez les premières lettres du nom : ");
+                scanf("%s", partialName);
+                //char* fullName = autoCompleteSearch(contacts, partialName);
+                //if (fullName != NULL) {
+                //printf("Nom complet trouvé : %s\n", fullName);
+                //free(fullName);
+                //} else {
+                printf("Aucun nom trouvé.\n");
+                //}
+                break;
+            }
+            case 2: {
+                char nom[100];
+                printf("Entrez le nom du contact : ");
+                scanf("%s", nom);
+                //Contact* foundContact = searchContact(contacts, nom);
+                //if (foundContact != NULL) {
+                //    displayAppointments(foundContact);
+                //} else {
+                printf("Contact non trouvé.\n");
+                //}
+                break;
+            }
+            case 3: {
+                char nom[100];
+                printf("Entrez le nom du nouveau contact : ");
+                scanf("%s", nom);
+                char prenom[100];
+                printf("Entrez le prenom du nouveau contact : ");
+                scanf("%s", prenom);
+                Contact* newContact = createContact(nom, prenom);
+                //insertContact(&contacts, newContact);
+                printf("Contact créé et ajouté à la liste.\n");
+                break;
+            }
+            case 4: {
+                char nom[100];
+                printf("Entrez le nom du contact : ");
+                scanf("%s", nom);
+                //Contact* foundContact = searchContact(contacts, nom);
+                //if (foundContact != NULL) {
+                //RDV* newRDV = createRDV(int jour, int mois, int annee, int heure, int minute, char* objet);
+                //insertRDV(foundContact, newRDV);
+                printf("Rendez-vous créé et ajouté au contact.\n");
+                //} else {
+                printf("Contact non trouvé. Créez d'abord le contact.\n");
+                //}
+                break;
+            }
+            case 5: {
+                char nom[100];
+                printf("Entrez le nom du contact : ");
+                scanf("%s", nom);
+                //Contact* foundContact = searchContact(contacts, nom);
+                //if (foundContact != NULL) {
+                //displayAppointments(foundContact);
+                int rdvIndex;
+                printf("Entrez l'indice du rendez-vous à supprimer : ");
+                scanf("%d", &rdvIndex);
+                //deleteRDV(foundContact, rdvIndex);
+                printf("Rendez-vous supprimé.\n");
+                //} else {
+                printf("Contact non trouvé.\n");
+                //}
+                break;
+            }
+            case 6:
+                //saveAppointmentsToFile(contacts);
+                printf("Rendez-vous sauvegardés dans le fichier.\n");
+                break;
+            case 7:
+                //loadAppointmentsFromFile(&contacts);
+                printf("Rendez-vous chargés depuis le fichier.\n");
+                break;
+            case 8:
+                //calculateInsertionTime(&contacts);
+                printf("Temps de calcul pour une insertion de nouveau contact fourni.\n");
+                break;
+            case 0:
+                printf("Au revoir!\n");
+                break;
+            default:
+                printf("Choix invalide. Veuillez entrer un nombre entre 0 et 8.\n");
+        }
+    } while (choice != 0);
+
+    return;
+}
+/*
+int getLevel(Contact contact, ListAgenda myList){
+    //marche que pour le nom pour l'instant
+    if(myList.nbLevels == 0 || myList.entreesHeads.next[0] == NULL){
+        return 4;
+    }
+    else{
+        int levelOfContact = 4;
+        for(int idxLetter = 0; idxLetter<=4; idxLetter++){
+            Entree* tempEntree = myList.entreesHeads.next[0];
+            //On copie le nom pour pas ecraser celui dans le contact
+            char* nomTemp = strdup(tempEntree->myContact.nom);
+            //On met le nomTemp en minuscule
+            for(int idxLetterTemp = 0; idxLetterTemp <= strlen(nomTemp); idxLetterTemp++){
+                nomTemp[idxLetterTemp] = tolower(nomTemp[idxLetterTemp]);
+            }
+            int resultComparaison = strcmp(nomTemp,contact.nom);
+            if(resultComparaison == 0){
+                levelOfContact = levelOfContact-1;
+            }
+            if(resultComparaison != 0){
+                //A FINIR
             }
         }
-        fclose(file);
-        printf("Appointments loaded from %s\n", filename);
-    } else {
-        printf("Error opening file for loading appointments.\n");
     }
+}*/
+
+void displayListInLevel(ListAgenda list){
+    Entree *temp=list.entreesHeads.next[0];
+    while (temp->EntreeNext.next[0] !=NULL){
+        printf("Contact : \n");
+        displayContact(&temp->myContact);
+        temp=temp->EntreeNext.next[0];
+    }
+    printf("Contact : \n");
+    displayContact(&temp->myContact);
 }
 
-void calculateInsertionTime(List *agenda, char *nom, char *prenom) {
-    int insertionTime = 0;
-    int level = 3;
-    Cell *currentCell = &agenda->cellsHeads[level];
-    while (level >= 0) {
-        if (currentCell->next == NULL || nom[0] < currentCell->next->letter) {
-            insertionTime++;
-            break;
-        } else if (nom[0] == currentCell->next->letter) {
-            currentCell = currentCell->next;
-            level--;
-        } else {
-            currentCell = currentCell->next;
+
+void displayAgendaInList(ListAgenda* myList){
+    if(myList==NULL){
+        printf("DisplayCellsInList error: List is empty (NULL).");
+        return;
+    }
+    for(int level = 1; level <= myList->nbLevels; level++){
+        Entree *temp=myList->entreesHeads.next[0];
+        printf("[list head_%d @-]--", level-1);
+        while (temp != NULL) {
+            if(temp->nbLevels >= level){
+                printf(">[ %s|@-]--", temp->myContact.nom);
+            }
+            else{
+                printf("----------");
+            }
+            temp = temp->EntreeNext.next[0];
         }
-        insertionTime++;
+        printf(">NULL\n");
     }
-
-    printf("Insertion time for %s %s: %d levels\n", nom, prenom, insertionTime);
+    printf("\n");
 }
 
-void displayMenu(List *agenda) {
-    printf("\n--- Agenda Management Menu ---\n");
-    printf("1. Search for a contact (auto-completion from the 3rd letter)\n");
-    printf("2. Display appointments of a contact\n");
-    printf("3. Create a new contact\n");
-    printf("4. Create a new appointment for a contact\n");
-    printf("5. Delete an appointment\n");
-    printf("6. Save all appointments to a file\n");
-    printf("7. Load appointments from a file\n");
-    printf("8. Calculate insertion time for a new contact\n");
-    printf("0. Exit\n");
+
+void addEntreetoAllList(ListAgenda* list, Entree* entree) {
+
+    if (list->entreesHeads.next[0] == NULL){
+        list->entreesHeads.next[0]=entree;
+        return;
+    }
+
+    Entree* current = list->entreesHeads.next[0];
+    if (strcmp(current->myContact.nom, entree->myContact.nom) > 0){
+        entree->EntreeNext.next[0] = current;
+        list->entreesHeads.next[0]=entree;
+        return;
+    }
+    while (current->EntreeNext.next[0] != NULL && strcmp(current->EntreeNext.next[0]->myContact.nom, entree->myContact.nom) < 0) {
+        current = current->EntreeNext.next[0];
+    }
+
+    entree->EntreeNext.next[0] = current->EntreeNext.next[0];
+    current->EntreeNext.next[0] = entree;
 }
 
-void executeMenuOption(List *agenda, int option) {
-    char nom[100], prenom[100], date[11], heure[6], duree[6], objet[100], filename[100];
-    CellLevel0 *contactCell;
+char* scanString(){
+    char* tempStr = (char*)malloc(200*sizeof(char));
+    printf("Scanning: ");
+    gets(tempStr);
+    return tempStr;
+}
 
-    switch (option) {
-        case 1:
-            printf("Enter partial name to search: ");
-            scanf("%s", nom);
-            contactCell = searchContact(agenda, nom);
-            break;
-        case 2:
-            printf("Enter contact name: ");
-            scanf("%s", nom);
-            contactCell = searchContact(agenda, nom);
-            if (contactCell != NULL) {
-                displayAppointments(contactCell->contact);
-            }
-            break;
-        case 3:
-            printf("Enter new contact name (nom prenom): ");
-            scanf("%s %s", nom, prenom);
-            createContact(agenda, nom, prenom);
-            break;
-        case 4:
-            printf("Enter contact name: ");
-            scanf("%s", nom);
-            contactCell = searchContact(agenda, nom);
-            if (contactCell != NULL) {
-                printf("Enter appointment details (date heure duree objet): ");
-                scanf("%s %s %s %s", date, heure, duree, objet);
-                createAppointment(agenda, nom, date, heure, duree, objet);
-            }
-            break;
-        case 5:
-            printf("Enter contact name: ");
-            scanf("%s", nom);
-            printf("Enter appointment details (date heure): ");
-            scanf("%s %s", date, heure);
-            deleteAppointment(agenda, nom, date, heure);
-            break;
-        case 6:
-            printf("Enter filename to save appointments: ");
-            scanf("%s", filename);
-            saveAppointments(agenda, filename);
-            break;
-        case 7:
-            printf("Enter filename to load appointments: ");
-            scanf("%s", filename);
-            loadAppointments(agenda, filename);
-            break;
-        case 8:
-            printf("Enter new contact name (nom prenom): ");
-            scanf("%s %s", nom, prenom);
-            calculateInsertionTime(agenda, nom, prenom);
-            break;
-        default:
-            printf("Invalid option.\n");
+Entree* findEntreeInList(ListAgenda list, Entree entree){
+    Entree *temp=list.entreesHeads.next[1];
+    while (temp->EntreeNext.next[1] !=NULL){
+        temp = temp->EntreeNext.next[1];
+        if (temp->myContact.nom == entree.myContact.nom)
+            return temp;
     }
+    return NULL;
 }
