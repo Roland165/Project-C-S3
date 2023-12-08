@@ -1,19 +1,7 @@
-//
-// Created by Max on 02/12/2023.
-//
 #include "agenda.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <ctype.h>
-#include "string.h"
-
-char* scanString(){
-    char* tempStr = (char*)malloc(200*sizeof(char));
-    printf("Scanning: ");
-    gets(tempStr);
-    return tempStr;
-}
 
 
 Contact* createContact(char* nom, char* prenom){
@@ -25,8 +13,8 @@ Contact* createContact(char* nom, char* prenom){
 
 void displayContact(Contact* myContact){
     if(myContact != NULL){
-        printf("   nom : %s\n",myContact->nom);
-        printf("   prenom : %s",myContact->prenom);
+        printf("nom : %s\n",myContact->nom);
+        printf("prenom : %s\n",myContact->prenom);
     }
 }
 
@@ -44,9 +32,9 @@ RDV* createRDV(int jour, int mois, int annee, int heure, int minute, char* objet
 }
 
 void displayRDV(RDV myRDV){
-    printf("   Jour/Mois/Annee: %d / %d / %d\n",myRDV.jour, myRDV.mois, myRDV.annee);
-    printf("   Heure h Minutes: %d h %d\n",myRDV.heure, myRDV.minute);
-    printf("   Objet : %s\n",myRDV.objet);
+    printf("\nLa date du rendez-vous est : %d / %d / %d.\n",myRDV.jour, myRDV.mois, myRDV.annee);
+    printf("Le rendez-vous est a %dh %d.\n",myRDV.heure, myRDV.minute);
+    printf("l'objet du rendez-vous est : %s.\n",myRDV.objet);
 }
 
 Entree* createEntree(Contact contact){
@@ -73,38 +61,6 @@ ListAgenda* createEmptyListAgenda(){
     return newList;
 }
 
-Entree* findEntreeInList(ListAgenda list, Entree entree){
-    Entree *temp=list.entreesHeads.next[1];
-    while (temp->EntreeNext.next[1] !=NULL){
-        temp = temp->EntreeNext.next[1];
-        if (temp->myContact.nom == entree.myContact.nom)
-            return temp;
-    }
-    return NULL;
-}
-
-void addEntreetoList(ListAgenda* list, Entree* entree) {
-
-    if (list->entreesHeads.next[0] == NULL){
-        list->entreesHeads.next[0]=entree;
-        return;
-    }
-
-    Entree* current = list->entreesHeads.next[0];
-    if (strcmp(current->myContact.nom, entree->myContact.nom) > 0){
-        entree->EntreeNext.next[0] = current;
-        list->entreesHeads.next[0]=entree;
-        return;
-    }
-    while (current->EntreeNext.next[0] != NULL && strcmp(current->EntreeNext.next[0]->myContact.nom, entree->myContact.nom) < 0) {
-        current = current->EntreeNext.next[0];
-    }
-
-    entree->EntreeNext.next[0] = current->EntreeNext.next[0];
-    current->EntreeNext.next[0] = entree;
-}
-
-
 LLCRDV *createLLCRDV(){
     LLCRDV *llcrdv=(LLCRDV*) malloc(sizeof (LLCRDV));
     llcrdv->head=NULL;
@@ -127,7 +83,7 @@ void addRDVtoLLCRDV(RDV *rdv, LLCRDV *llcrdv){
 void displayLLCRDV(LLCRDV llcrdv){
     RDV *temp=llcrdv.head;
     if (temp==NULL){
-        printf("Empty list\n");
+        printf("Ce contact n'a pas de rendez-vous.\n\n");
         return;
     }
     int i=1;
@@ -142,25 +98,39 @@ void displayLLCRDV(LLCRDV llcrdv){
     printf("\n");
 }
 
+void displayInformationFromSomeone(char* name, ListAgenda list){
+    int i = 1;
+    printf("%s",name);
+    Entree *temp=list.entreesHeads.next[0];
+    while (temp->EntreeNext.next[0] != NULL){
+        if (temp->myContact.nom == name){
+            printf("\nLes RDV(s) de la personne : \n");
+            displayLLCRDV(temp->myLLCRDV);
+            i = 0;
+        }
+            temp=temp->EntreeNext.next[0];
+    }
+    if (i){
+        printf("\nCette personne n'existe pas");
+    }
+}
 
 void displayList(ListAgenda list){
     if (list.entreesHeads.next[0]==NULL){
-        printf("Empty list\n");
+        printf("Ce contact n'a pas de rendez-vous\n");
         return;
     }
     Entree *temp=list.entreesHeads.next[0];
-    int i=1;
     while (temp->EntreeNext.next[0] !=NULL){
-        printf("Contact : \n");
+        printf("Informations du contact : \n");
         displayContact(&temp->myContact);
-        printf("\n and RDV(s) : \n");
+        printf("\nLes RDV(s) de la personne : \n");
         displayLLCRDV(temp->myLLCRDV);
         temp=temp->EntreeNext.next[0];
-        i++;
     }
-    printf("Contact : \n");
+    printf("Informations du contact : \n");
     displayContact(&temp->myContact);
-    printf("\n and RDV(s) : \n");
+    printf("\nLes RDV(s) de la personne : \n");
     displayLLCRDV(temp->myLLCRDV);
 }
 
@@ -279,7 +249,7 @@ void menu(){
 
     return;
 }
-
+/*
 int getLevel(Contact contact, ListAgenda myList){
     //marche que pour le nom pour l'instant
     if(myList.nbLevels == 0 || myList.entreesHeads.next[0] == NULL){
@@ -304,4 +274,77 @@ int getLevel(Contact contact, ListAgenda myList){
             }
         }
     }
+}*/
+
+void displayListInLevel(ListAgenda list){
+    Entree *temp=list.entreesHeads.next[0];
+    while (temp->EntreeNext.next[0] !=NULL){
+        printf("Contact : \n");
+        displayContact(&temp->myContact);
+        temp=temp->EntreeNext.next[0];
+    }
+    printf("Contact : \n");
+    displayContact(&temp->myContact);
+}
+
+
+void displayAgendaInList(ListAgenda* myList){
+    if(myList==NULL){
+        printf("DisplayCellsInList error: List is empty (NULL).");
+        return;
+    }
+    for(int level = 1; level <= myList->nbLevels; level++){
+        Entree *temp=myList->entreesHeads.next[0];
+        printf("[list head_%d @-]--", level-1);
+        while (temp != NULL) {
+            if(temp->nbLevels >= level){
+                printf(">[ %s|@-]--", temp->myContact.nom);
+            }
+            else{
+                printf("----------");
+            }
+            temp = temp->EntreeNext.next[0];
+        }
+        printf(">NULL\n");
+    }
+    printf("\n");
+}
+
+
+void addEntreetoAllList(ListAgenda* list, Entree* entree) {
+
+    if (list->entreesHeads.next[0] == NULL){
+        list->entreesHeads.next[0]=entree;
+        return;
+    }
+
+    Entree* current = list->entreesHeads.next[0];
+    if (strcmp(current->myContact.nom, entree->myContact.nom) > 0){
+        entree->EntreeNext.next[0] = current;
+        list->entreesHeads.next[0]=entree;
+        return;
+    }
+    while (current->EntreeNext.next[0] != NULL && strcmp(current->EntreeNext.next[0]->myContact.nom, entree->myContact.nom) < 0) {
+        current = current->EntreeNext.next[0];
+    }
+
+    entree->EntreeNext.next[0] = current->EntreeNext.next[0];
+    current->EntreeNext.next[0] = entree;
+}
+
+char* scanString(){
+    char* tempStr = (char*)malloc(200*sizeof(char));
+    printf("Scanning: ");
+    gets(tempStr);
+    return tempStr;
+}
+
+Entree* findEntreeInList(ListAgenda list, Entree entree){
+    Entree *temp=list.entreesHeads.next[1];
+    while (temp->EntreeNext.next[1] !=NULL){
+        temp = temp->EntreeNext.next[1];
+        if (temp->myContact.nom == entree.myContact.nom)
+            return temp;
+    }
+    return NULL;
 }
