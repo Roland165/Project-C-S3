@@ -2,35 +2,61 @@
 #include <stdlib.h>
 #include <string.h>
 
+typedef struct Contact{
+    char* nom;
+    char* prenom;
+}Contact;
 
-typedef struct Contact {
-    char *nom;
-    char *prenom;
-} Contact;
+typedef struct RDV{
+    int jour;
+    int mois;
+    int annee;
+    int heure;
+    int minute;
+    char* objet;
+    struct RDV* next;
+}RDV;
+
+typedef struct LLCRDV{
+    RDV* head;
+}LLCRDV;
+
+typedef struct Entrees{
+    struct Entree **next;
+}Entrees;
+
+typedef struct Entree{
+    Contact myContact;
+    LLCRDV myLLCRDV;
+    struct Entrees EntreeNext;
+    int nbLevels;
+}Entree;
+
+typedef struct ListAgenda{
+    Entrees entreesHeads;
+    int nbLevels;
+}ListAgenda;
 
 
-typedef struct Appointment {
-    char *date;
-    char *heure;
-    char *duree;
-    char *objet;
-} Appointment;
 
-
-typedef struct CellLevel0 {
-    Contact *contact;  
-    Appointment *appointment;
-    struct CellLevel0 *next;
-} CellLevel0;
-
-
-typedef struct Cell {
-    char letter;  
-    struct Cell *next; 
-    struct CellLevel0 *down; 
-} Cell;
-
-
-typedef struct List {
-    Cell cellsHeads[4]; 
-} List;
+Contact* createContact(char* nom, char* prenom);
+void displayContact(Contact* myContact);
+RDV* createRDV(int jour, int mois, int annee, int heure, int minute, char* objet);
+void displayRDV(RDV myRDV);
+Entree* createEntree(Contact);
+ListAgenda* createEmptyListAgenda();
+Entree* findEntreeInList(ListAgenda list, Entree entree);
+void addEntreetoList(ListAgenda*, Entree*);
+void displayList(ListAgenda list);
+void addRDVtoLLCRDV(RDV *rdv, LLCRDV *llcrdv);
+LLCRDV *createLLCRDV();
+void displayLLCRDV(LLCRDV llcrdv);
+void menu();
+void displayMenu();
+void displayListInLevel(ListAgenda);
+void displayAgendaInList(ListAgenda* myList);
+int compareEntries(Entree* entry1, Entree* entry2, int level);
+void addEntreetoAllList(ListAgenda* list, Entree* entree);
+char* scanString();
+int getLevel(Contact contact, ListAgenda myList);
+void displayInformationFromSomeone(char* name, ListAgenda list);
