@@ -5,6 +5,7 @@
 #ifndef PROJET_C_S3_MAX_AGENDA_H
 #define PROJET_C_S3_MAX_AGENDA_H
 
+
 typedef struct Contact{
     char* nom;
     char* prenom;
@@ -42,13 +43,11 @@ typedef struct ListAgenda{
 
 
 
-char* scanString();
 Contact* createContact(char* nom, char* prenom);
 void displayContact(Contact* myContact);
 RDV* createRDV(int jour, int mois, int annee, int heure, int minute, char* objet);
 void displayRDV(RDV myRDV);
 Entree* createEntree(Contact);
-int getLevel(Contact contact, ListAgenda myList);
 ListAgenda* createEmptyListAgenda();
 Entree* findEntreeInList(ListAgenda list, Entree entree);
 void addEntreetoList(ListAgenda*, Entree*);
@@ -58,4 +57,13 @@ LLCRDV *createLLCRDV();
 void displayLLCRDV(LLCRDV llcrdv);
 void menu();
 void displayMenu();
+void displayListInLevel(ListAgenda);
+void displayAgendaInList(ListAgenda* myList);
+int compareEntries(Entree* entry1, Entree* entry2, int level);
+void addEntreetoAllList(ListAgenda* list, Entree* entree);
+char* scanString();
+int getLevel(Contact contact, ListAgenda myList);
+void displayInformationFromSomeone(char* name, ListAgenda list);
+
+#endif
 
