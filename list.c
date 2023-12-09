@@ -22,12 +22,12 @@ List* createEmptyList(int nbLevelsMaxi) {
     return newList;
 }
 
-// Ajout d'une cellule avec la valeur spécifiée à la liste en la triant
+// Ajout d'une cellule avec la valeur spécifiée à la tête de la liste
 List* insertCellInOrder(List* myList, int value, int nbLevels) {
-    Cell* newCell = createCell(value, nbLevels);
+    Cell* newCell = createCell(value, nbLevels+1);
 
     // Boucle pour parcourir les niveaux et insérer la nouvelle cellule
-    for (int i = 0; i < nbLevels; i++) {
+    for (int i = 0; i < nbLevels+1; i++) {
         Cell** current = &myList->cellsHeads.next[i];
         while (*current != NULL && (*current)->value < value) {
             current = &(*current)->cellsNext.next[i];
@@ -39,19 +39,6 @@ List* insertCellInOrder(List* myList, int value, int nbLevels) {
     return myList;
 }
 
-// Ajout d'une cellule avec la valeur spécifiée à la tête de la liste
-List* addCellToHeadList(List* myList, int value, int nbLevels){
-    Cell* newCell = createCell(value, nbLevels);
-
-    // Boucle pour parcourir les niveaux et insérer la nouvelle cellule
-    for (int i = 0; i < nbLevels; i++) {
-        // Insérer la nouvelle cellule à la tête de la liste pour chaque niveau
-        newCell->cellsNext.next[i] = myList->cellsHeads.next[i];
-        myList->cellsHeads.next[i] = newCell;
-    }
-
-    return myList;
-}
 
 // Affichage de l'ensemble des cellules de la liste pour un niveau donné
 void displayCellsForLevel(List* myList, int level) {
@@ -91,7 +78,7 @@ void displayAllLevels(List* myList) {
 
         while (temp != NULL) {
             // Affichage de la cellule si elle a un niveau suffisant
-            if (temp->nbLevels >= level) {
+            if (temp->nbLevels >= level+1) {
                 printf(">[ %d|@-]--", temp->value);
             } else {
                 printf("----------");
@@ -101,4 +88,17 @@ void displayAllLevels(List* myList) {
 
         printf(">NULL\n");
     }
+}
+
+List* addCellToHeadList(List* myList, int value, int nbLevels){
+    Cell* newCell = createCell(value, nbLevels+1);
+
+    // Boucle pour parcourir les niveaux et insérer la nouvelle cellule
+    for (int i = 0; i < nbLevels+1; i++) {
+        // Insérer la nouvelle cellule à la tête de la liste pour chaque niveau
+        newCell->cellsNext.next[i] = myList->cellsHeads.next[i];
+        myList->cellsHeads.next[i] = newCell;
+    }
+
+    return myList;
 }
