@@ -115,6 +115,11 @@ void displayInformationFromSomeone(char* name, ListAgenda list){
         }
         temp=temp->EntreeNext.next[0];
     }
+    if (temp->myContact.nom == name){
+        printf("\nLes RDV(s) de la personne : \n");
+        displayLLCRDV(temp->myLLCRDV);
+        i = 0;
+    }
     if (i){
         printf("\nCette personne n'existe pas");
     }
