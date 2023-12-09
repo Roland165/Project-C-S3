@@ -9,13 +9,13 @@ List* createEmptyList(int nbLevelsMaxi) {
     }
 
     List* newList = (List*)malloc(sizeof(List));
-    newList->nbLevels = nbLevelsMaxi;
+    newList->nbLevels = nbLevelsMaxi-1;
 
     // Allocation dynamique du tableau de pointeurs pour les niveaux de la liste
-    newList->cellsHeads.next = (Cell**)malloc(sizeof(Cell*) * nbLevelsMaxi+1);
+    newList->cellsHeads.next = (Cell**)malloc(sizeof(Cell*) * nbLevelsMaxi);
 
     // Initialisation de chaque pointeur à NULL
-    for (int i = 0; i < nbLevelsMaxi+1; i++) {
+    for (int i = 0; i < nbLevelsMaxi; i++) {
         newList->cellsHeads.next[i] = NULL;
     }
 
