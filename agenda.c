@@ -353,3 +353,11 @@ Entree* findEntreeInList(ListAgenda list, Entree entree){
     }
     return NULL;
 }
+
+void createRDVForEntree(int jour, int mois, int annee, int heure, int minute, char* objet, Entree *entree){
+    RDV* myRDV = createRDV(jour,mois,annee,heure,minute,objet);
+    if (entree->myLLCRDV.head == NULL){
+        LLCRDV *llcrdv =createLLCRDV();
+    }
+    addRDVtoLLCRDV(myRDV, &entree->myLLCRDV);
+}
