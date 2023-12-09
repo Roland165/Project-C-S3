@@ -1,5 +1,5 @@
-#ifndef PROJET_C_S3_MAX_CELLANDCELLS_H
-#define PROJET_C_S3_MAX_CELLANDCELLS_H
+#ifndef PROJET_C_S3_MAX_CELL_AND_CELLS_H
+#define PROJET_C_S3_MAX_CELL_AND_CELLS_H
 
 
 // Définition d'une structure Cells représentant un tableau de pointeurs vers des Cell
