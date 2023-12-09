@@ -10,15 +10,18 @@ typedef struct List {
 } List;
 
 // Fonction pour créer une liste vide avec un certain nombre de niveaux
-List* createEmptyList(int);
-
-// Fonction pour afficher les cellules pour un niveau spécifique de la liste
-void displayCellsForLevel(List*, int);
+List* createEmptyList(int level);
 
 // Fonction pour insérer une cellule dans la liste de manière ordonnée
-List* insertCellInOrder(List*, int, int);
+List* insertCellInOrder(List* list, int value, int level);
+
+// Fonction pour insérer une cellule en tête de liste
+List* addCellToHeadList(List* list, int value, int level);
+
+// Fonction pour afficher les cellules pour un niveau spécifique de la liste
+void displayCellsForLevel(List* list, int level);
 
 // Fonction pour afficher toutes les cellules de tous les niveaux de la liste
-void displayAllLevels(List*);
+void displayAllLevels(List* list);
 
 #endif
