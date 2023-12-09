@@ -4,13 +4,17 @@
 int main() {
     //partie 1
     /*
-    List* myList = createEmptyList(5);
-    addCellToHeadList(myList, 3, 3);
-    addCellToHeadList(myList, 6, 2);
-    addCellToHeadList(myList, 9, 3);
-    addCellToHeadList(myList, 7, 1);
-    addCellToHeadList(myList, 15,1);
-    displayCellsInList(myList);
+    List *myList = createEmptyList(4);
+    addCellToHeadList(myList, 5, 3);
+    insertCellInOrder(myList, 3, 3);
+    insertCellInOrder(myList, 6, 2);
+    insertCellInOrder(myList, 9, 3);
+    insertCellInOrder(myList, 7, 1);
+    insertCellInOrder(myList, 2, 5);
+    addCellToHeadList(myList, 8, 4);
+    displayAllLevels(myList);
+    displayCellsForLevel(myList,2);
+    displayCellsForLevel(myList,4);
 
     //partie 2
     int nbLevels = 15;
