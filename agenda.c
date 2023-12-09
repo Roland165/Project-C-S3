@@ -102,13 +102,18 @@ void displayInformationFromSomeone(char* name, ListAgenda list){
     int i = 1;
     printf("%s",name);
     Entree *temp=list.entreesHeads.next[0];
+    if (temp->EntreeNext.next[0] == NULL && temp != NULL && temp->myContact.nom == name){
+        printf("\nLes RDV(s) de la personne : \n");
+        displayLLCRDV(temp->myLLCRDV);
+        i = 0;
+    }
     while (temp->EntreeNext.next[0] != NULL){
         if (temp->myContact.nom == name){
             printf("\nLes RDV(s) de la personne : \n");
             displayLLCRDV(temp->myLLCRDV);
             i = 0;
         }
-            temp=temp->EntreeNext.next[0];
+        temp=temp->EntreeNext.next[0];
     }
     if (i){
         printf("\nCette personne n'existe pas");
