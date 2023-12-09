@@ -22,7 +22,7 @@ List* createEmptyList(int nbLevelsMaxi) {
     return newList;
 }
 
-// Ajout d'une cellule avec la valeur spécifiée à la tête de la liste
+// Ajout d'une cellule avec la valeur spécifiée à la liste en la triant
 List* insertCellInOrder(List* myList, int value, int nbLevels) {
     Cell* newCell = createCell(value, nbLevels);
 
@@ -39,6 +39,19 @@ List* insertCellInOrder(List* myList, int value, int nbLevels) {
     return myList;
 }
 
+// Ajout d'une cellule avec la valeur spécifiée à la tête de la liste
+List* addCellToHeadList(List* myList, int value, int nbLevels){
+    Cell* newCell = createCell(value, nbLevels);
+
+    // Boucle pour parcourir les niveaux et insérer la nouvelle cellule
+    for (int i = 0; i < nbLevels; i++) {
+        // Insérer la nouvelle cellule à la tête de la liste pour chaque niveau
+        newCell->cellsNext.next[i] = myList->cellsHeads.next[i];
+        myList->cellsHeads.next[i] = newCell;
+    }
+
+    return myList;
+}
 
 // Affichage de l'ensemble des cellules de la liste pour un niveau donné
 void displayCellsForLevel(List* myList, int level) {
