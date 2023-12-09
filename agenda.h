@@ -64,6 +64,9 @@ void addEntreetoAllList(ListAgenda* list, Entree* entree);
 char* scanString();
 int getLevel(Contact contact, ListAgenda myList);
 void displayInformationFromSomeone(char* name, ListAgenda list);
+void createRDVForEntree(int jour, int mois, int annee, int heure, int minute, char* objet, Entree *entree);
+void deleteRDVFromEntreeByObject(Entree *entree, char *objet);
+Entree *createContactInList(ListAgenda *listAgenda, char* nom, char* prenom );
 
 #endif
 
