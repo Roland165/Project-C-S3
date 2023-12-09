@@ -17,17 +17,18 @@ int main() {
     displayCellsForLevel(myList,4);
 
     //partie 2
-    int nbLevels = 15;
-    List* myList2 = createListFromValue(nbLevels);
-    displaySearchInTheLowestLevel(myList2, 9);
-    displaySearchInTheLowestLevel(myList2, 3000);
-    displaySearchInTheLowestLevel(myList2, 17);
-    displaySearchInTheLowestLevel(myList2, 998);
+    int nbLevels = 8;
+    List *myList2 = createListFromValue(nbLevels);
+    displaySearchInLowestLevel(myList2, 9);
+    displaySearchInLowestLevel(myList2, 3000);
+    displaySearchInLowestLevel(myList2, 17);
+    displaySearchInLowestLevel(myList2, 998);
     displaySearchFromHighestLevel(myList2, 8);
     displaySearchFromHighestLevel(myList2, 16);
     displaySearchFromHighestLevel(myList2, 62);
     displaySearchFromHighestLevel(myList2, 100);
-    displayTimeBothSearchesForNbrLevelsMaxAndNbrValues(14,100000);
+    displayAllLevels(myList2);
+    displayTimeBothSearches(11, 100000);
     */
     //partie 3
     LLCRDV *llcrdv =createLLCRDV();
