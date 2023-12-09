@@ -381,3 +381,10 @@ void deleteRDVFromEntreeByObject(Entree *entree, char *objet){
         temp=&temp->next[0];
     }
 }
+
+Entree *createContactInList(ListAgenda *listAgenda, char* nom, char* prenom ){
+    Contact *myContact =createContact("Dugrond","Eric");
+    Entree *myEntree = createEntree(*myContact);
+    addEntreetoAllList(listAgenda, myEntree);
+    return myEntree;
+}
