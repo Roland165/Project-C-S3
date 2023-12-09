@@ -361,3 +361,23 @@ void createRDVForEntree(int jour, int mois, int annee, int heure, int minute, ch
     }
     addRDVtoLLCRDV(myRDV, &entree->myLLCRDV);
 }
+
+void deleteRDVFromEntreeByObject(Entree *entree, char *objet){
+    RDV *temp;
+    RDV *prev = entree->myLLCRDV.head;
+    if ( prev == NULL){
+        printf("Ce contact n'a pas de rendez-vous.");
+    }
+    if (prev->objet == objet){
+        entree->myLLCRDV.head=entree->myLLCRDV.head->next;
+    }
+    temp=prev->next;
+    while(temp != NULL){
+        if(temp->objet == objet){
+            prev->next=temp->next;
+            return;
+        }
+        prev=temp;
+        temp=&temp->next[0];
+    }
+}
