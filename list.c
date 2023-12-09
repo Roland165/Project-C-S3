@@ -42,30 +42,25 @@ List* addCellToHeadList(List* myList, int value, int nbLevels) {
 
 // Affichage des cellules d'un niveau spécifié dans la liste
 void displayCellsInListByLevel(List* myList, int level) {
-    if (myList == NULL) {
-        printf("Error: List is empty (NULL).\n");
-        return;
-    }
-
     if (myList->cellsHeads.next[0] == NULL) {
         printf("This list is empty.\n");
         return;
     }
 
-    if (level <= 0 || level > myList->nbLevels) {
-        printf("Error: Cannot display this level. The level of a list starts at 1 and is less than or equal to the total number of levels.\n");
+    if (level < 0 || level >= myList->nbLevels) {
+        printf("Error: Cannot display this level. The level of a list starts at 0 and is less than or equal to the total number of levels.\n");
         return;
     }
 
-    Cell* temp = myList->cellsHeads.next[level - 1];
-    printf("Display of list by level %d: ", level);
+    Cell* temp = myList->cellsHeads.next[level];
+    printf("Display of list by level %d : ", level);
 
     while (temp != NULL) {
-        printf("%d ", temp->value);
-        temp = temp->cellsNext.next[level - 1];
+        printf("%d -> ", temp->value);
+        temp = temp->cellsNext.next[level];
     }
 
-    printf("\n");
+    printf("NULL\n");
 }
 
 
@@ -93,6 +88,4 @@ void displayCellsInList(List* myList) {
 
         printf(">NULL\n");
     }
-
-    printf("\n");
 }
