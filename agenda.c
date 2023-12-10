@@ -13,7 +13,7 @@ Contact* createContact(char* nom, char* prenom){
 
 void displayContact(Contact* myContact){
     if(myContact != NULL){
-        printf("nom : %s\n",myContact->nom);
+        printf("\nnom : %s\n",myContact->nom);
         printf("prenom : %s\n",myContact->prenom);
     }
 }
@@ -100,7 +100,7 @@ void displayLLCRDV(LLCRDV llcrdv){
 
 void displayInformationFromSomeone(char* name, ListAgenda list){
     int i = 1;
-    printf("%s",name);
+    printf("\n%s",name);
     Entree *temp=list.entreesHeads.next[0];
     if (temp->EntreeNext.next[0] == NULL && temp != NULL && temp->myContact.nom == name){
         printf("\nLes RDV(s) de la personne : \n");
