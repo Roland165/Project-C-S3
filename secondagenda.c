@@ -3,6 +3,7 @@
 #include "stdio.h"
 #include "string.h"
 
+// Fonction pour créer un contact
 Contact* createContact(char* nom, char* prenom){
     Contact* newContact = (Contact*) malloc(sizeof(Contact));
     newContact->nom = nom;
@@ -10,6 +11,7 @@ Contact* createContact(char* nom, char* prenom){
     return newContact;
 }
 
+// Fonction pour créer un rendez-vous
 RDV* createRDV(int jour, int mois, int annee, int heure, int minute, char* objet){
     RDV* newRDV = (RDV*) malloc(sizeof(RDV));
     newRDV->jour = jour;
@@ -22,12 +24,14 @@ RDV* createRDV(int jour, int mois, int annee, int heure, int minute, char* objet
     return newRDV;
 }
 
+// Fonction pour afficher un rendez-vous
 void displayRDV(RDV myRDV){
     printf("\nLa date du rendez-vous est : %d / %d / %d.\n",myRDV.jour, myRDV.mois, myRDV.annee);
     printf("Le rendez-vous est a %dh %d.\n",myRDV.heure, myRDV.minute);
     printf("l'objet du rendez-vous est : %s.\n",myRDV.objet);
 }
 
+// Fonction pour créer une Entree
 Entree* createEntree(Contact contact){
     Entree* newEntree = (Entree *) malloc(sizeof (Entree));
     newEntree->myContact=contact;
@@ -41,6 +45,7 @@ Entree* createEntree(Contact contact){
     return newEntree;
 }
 
+//Fonction pour trouver une entree dans la liste
 Entree* findEntreeInList(ListAgenda list, Entree entree){
     Entree *temp=list.entreesHeads.next[1];
     while (temp->EntreeNext.next[1] !=NULL){
@@ -51,6 +56,7 @@ Entree* findEntreeInList(ListAgenda list, Entree entree){
     return NULL;
 }
 
+//Fonction pour ajouter un rendez-vous à sa liste chaînée
 void addRDVtoLLCRDV(RDV *rdv, LLCRDV *llcrdv){
     if (llcrdv->head == NULL){
         llcrdv->head=rdv;
@@ -64,12 +70,14 @@ void addRDVtoLLCRDV(RDV *rdv, LLCRDV *llcrdv){
     }
 }
 
+//Fonction pour créer une liste chaînée vide de rendez-vous
 LLCRDV *createLLCRDV(){
     LLCRDV *llcrdv=(LLCRDV*) malloc(sizeof (LLCRDV));
     llcrdv->head=NULL;
     return llcrdv;
 }
 
+//Fonction pour afficher une liste chaînée de rendez-vous
 void displayLLCRDV(LLCRDV llcrdv){
     RDV *temp=llcrdv.head;
     if (temp==NULL){
@@ -88,6 +96,7 @@ void displayLLCRDV(LLCRDV llcrdv){
     printf("\n");
 }
 
+//Fonction test pour afficher les niveaux dans la liste
 void displayListInLevel(ListAgenda list){
     Entree *temp=list.entreesHeads.next[0];
     while (temp->EntreeNext.next[0] !=NULL){
@@ -99,6 +108,7 @@ void displayListInLevel(ListAgenda list){
     displayContact(&temp->myContact);
 }
 
+//fonction pour ajouter une Entree à la liste
 void addEntreetoAllList(ListAgenda* list, Entree* entree) {
 
     if (list->entreesHeads.next[0] == NULL){
@@ -120,6 +130,7 @@ void addEntreetoAllList(ListAgenda* list, Entree* entree) {
     current->EntreeNext.next[0] = entree;
 }
 
+//Fonction pour récupérer les informations dans la console destiné au menu
 char* scanString(){
     char* tempStr = (char*)malloc(200*sizeof(char));
     printf("Scanning: ");
@@ -128,6 +139,7 @@ char* scanString(){
 }
 
 /*
+//Fonction pour avoir le niveau de l'Entree en fonction des premières lettres du nom de son Contact
 int getLevel(Contact contact, ListAgenda myList){
     //marche que pour le nom pour l'instant
     if(myList.nbLevels == 0 || myList.entreesHeads.next[0] == NULL){
@@ -153,4 +165,5 @@ int getLevel(Contact contact, ListAgenda myList){
         }
     }
 }*/
+
 
