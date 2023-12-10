@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include "secondagenda.h"
 
+// Fonction pour afficher un contact
 void displayContact(Contact* myContact){
     if(myContact != NULL){
         printf("\nnom : %s\n",myContact->nom);
@@ -10,6 +11,7 @@ void displayContact(Contact* myContact){
     }
 }
 
+//Fonction pour créer une ListAgenda vide
 ListAgenda* createEmptyListAgenda(){
     ListAgenda* newList =(ListAgenda*) malloc(sizeof(ListAgenda));
     newList->nbLevels=4;
@@ -21,6 +23,7 @@ ListAgenda* createEmptyListAgenda(){
     return newList;
 }
 
+//Fonction pour afficher les information d'une personne dans la liste
 void displayInformationFromSomeone(char* name, ListAgenda list){
     int i = 1;
     printf("\n%s",name);
@@ -48,6 +51,7 @@ void displayInformationFromSomeone(char* name, ListAgenda list){
     }
 }
 
+//Fonction pour afficher la liste
 void displayList(ListAgenda list){
     if (list.entreesHeads.next[0]==NULL){
         printf("Ce contact n'a pas de rendez-vous\n");
@@ -67,7 +71,7 @@ void displayList(ListAgenda list){
     displayLLCRDV(temp->myLLCRDV);
 }
 
-//Mathieu
+//Fonction pour afficher le menu
 void displayMenu() {
     printf("\nMenu:\n");
     printf("1. Rechercher un contact\n");
@@ -81,7 +85,7 @@ void displayMenu() {
     printf("0. Quitter\n");
 }
 
-//Mathieu
+//Fonction menu
 void menu(){
     int choice;
 
@@ -182,6 +186,7 @@ void menu(){
     return;
 }
 
+//Fonction pour afficher la liste sous sa forme classique
 void displayAgendaInList(ListAgenda* myList){
     if(myList==NULL){
         printf("DisplayCellsInList error: List is empty (NULL).");
@@ -204,6 +209,7 @@ void displayAgendaInList(ListAgenda* myList){
     printf("\n");
 }
 
+//Fonction pour créer un rendez-vous directement dans une Entree
 void createRDVForEntree(int jour, int mois, int annee, int heure, int minute, char* objet, Entree *entree){
     RDV* myRDV = createRDV(jour,mois,annee,heure,minute,objet);
     if (entree->myLLCRDV.head == NULL){
@@ -212,6 +218,7 @@ void createRDVForEntree(int jour, int mois, int annee, int heure, int minute, ch
     addRDVtoLLCRDV(myRDV, &entree->myLLCRDV);
 }
 
+//Fonction pour supprimer un rendez-vous dans une Entree par l'objet
 void deleteRDVFromEntreeByObject(Entree *entree, char *objet){
     RDV *temp;
     RDV *prev = entree->myLLCRDV.head;
@@ -232,6 +239,7 @@ void deleteRDVFromEntreeByObject(Entree *entree, char *objet){
     }
 }
 
+//Fonction pour créer un contact dans la liste avec son Entree
 Entree *createContactInList(ListAgenda *listAgenda, char* nom, char* prenom ){
     Contact *myContact =createContact(nom ,prenom);
     Entree *myEntree = createEntree(*myContact);
