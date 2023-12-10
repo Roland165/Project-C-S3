@@ -2,66 +2,39 @@
 #include "agenda.h"
 
 int main() {
-    //partie 1
-    /*
-    List *myList = createEmptyList(5);
-    addCellToHeadList(myList, 5, 2);
-    insertCellInOrder(myList, 3, 3);
-    insertCellInOrder(myList, 6, 2);
-    insertCellInOrder(myList, 9, 3);
-    insertCellInOrder(myList, 7, 0);
-    insertCellInOrder(myList, 2, 4);
-    addCellToHeadList(myList, 8, 4);
-    displayAllLevels(myList);
-    displayCellsForLevel(myList,2);
-    displayCellsForLevel(myList,4);
+    // PARTIE 1 :
 
-    //partie 2
-    int nbLevels = 8;
-    List *myList2 = createListFromValue(nbLevels);
-    displaySearchInLowestLevel(myList2, 9);
-    displaySearchInLowestLevel(myList2, 3000);
-    displaySearchInLowestLevel(myList2, 17);
-    displaySearchInLowestLevel(myList2, 998);
-    displaySearchFromHighestLevel(myList2, 8);
-    displaySearchFromHighestLevel(myList2, 16);
-    displaySearchFromHighestLevel(myList2, 62);
-    displaySearchFromHighestLevel(myList2, 100);
+    Cell *cell1 = createCell(4, 3);
+    List *myList1 = createEmptyList(6);
+    addCellToHeadList(myList1, 4,3);
+    addCellToHeadList(myList1, 1,4);
+    addCellToHeadList(myList1, 7,2);
+    displayCellsForLevel(myList1, 1);
+    displayAllLevels(myList1);
+
+    //PARTIE 2
+
+    List *myList2 = createListFromValue(3);
     displayAllLevels(myList2);
-    displayTimeBothSearches(11, 100000);
-    */
-    //partie 3
-    LLCRDV *llcrdv =createLLCRDV();
+    displaySearchInLowestLevel(myList2,4);
+    displaySearchFromHighestLevel(myList2,8);
+    displayTimeBothSearches(12,100000);
 
-    RDV* myRDV = createRDV(01,10,2000,23,59,"Coucou les musulmans moi je mange de la glace");
-    RDV* secondRDV = createRDV(20,18,2057,14,18,"Ca marche?");
-    //RDV* thirdRDV = createRDV(20,18,2057,14,18,"Ca marche?");
 
-    //addRDVtoLLCRDV(myRDV,llcrdv);
-    //addRDVtoLLCRDV(secondRDV,llcrdv);
-    //addRDVtoLLCRDV(thirdRDV,llcrdv);
+    //PARTIE 3
 
-    //displayLLCRDV(*llcrdv);
+    ListAgenda *myList3=createEmptyListAgenda();
+    Entree *entreepaulo = createContactInList(myList3, "Dybala", "Paulo");
+    Entree *entreeyassine = createContactInList(myList3, "Bounou", "Yassine");
 
-    ListAgenda *listagenda = createEmptyListAgenda();
-    Contact *emmanouel = createContact("Dupont","Emmanouel");
-    Entree *entreeemmanouel= createEntree(*emmanouel);
-    addRDVtoLLCRDV(myRDV,llcrdv);
-    entreeemmanouel->myLLCRDV=*llcrdv;
-    addRDVtoLLCRDV(secondRDV,llcrdv);
-    addEntreetoAllList(listagenda, entreeemmanouel);
-    Contact *nathan = createContact("Dugrond","Nathan");
-    Entree *entreenathan= createEntree(*nathan);
-    addEntreetoAllList(listagenda, entreenathan);
-    Contact *roland = createContact("Fontanes","Roland");
-    Entree *entreeroland= createEntree(*roland);
-    addEntreetoAllList(listagenda, entreeroland);
-    Contact *elia = createContact("Eglantine","Elia");
-    Entree *entreeelia= createEntree(*elia);
-    addEntreetoAllList(listagenda, entreeelia);
-    displayList(*listagenda);
-    displayAgendaInList(listagenda);
-    char* try = (char *) "Dupont";
-    displayInformationFromSomeone(try, *listagenda);
-    //menu();
+    createRDVForEntree(10,05,2017,12,45,"Blessure grave",entreepaulo);
+    createRDVForEntree(15,07,2018,10,05,"Visite anuelle",entreepaulo);
+    createRDVForEntree(18,07,2018,11,30,"Visite anuelle",entreeyassine);
+    deleteRDVFromEntreeByObject(entreepaulo,"Blessure grave");
+
+    displayContact(&entreepaulo->myContact);
+    displayInformationFromSomeone("Dybala", *myList3);
+
+    displayAgendaInList(myList3);
+    displayList(*myList3);
 }
