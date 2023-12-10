@@ -61,6 +61,7 @@ void displayCellsForLevel(List* myList, int level) {
     }
 
     printf("NULL\n");
+    printf("\n");
 }
 
 
@@ -88,6 +89,7 @@ void displayAllLevels(List* myList) {
 
         printf(">NULL\n");
     }
+    printf("\n");
 }
 
 // Ajout d'une cellule avec la valeur spécifiée à la tête de la liste
